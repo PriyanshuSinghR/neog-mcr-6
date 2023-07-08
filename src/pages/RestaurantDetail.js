@@ -106,7 +106,11 @@ export const RestaurantDetail = () => {
                     >
                       <img
                         src={pp}
-                        style={{ borderRadius: '50% 50%', height: '30px' }}
+                        style={{
+                          borderRadius: '50% 50%',
+                          width: '30px',
+                          height: '30px',
+                        }}
                       />{' '}
                       <div
                         style={{
