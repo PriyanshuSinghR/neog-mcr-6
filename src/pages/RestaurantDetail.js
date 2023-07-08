@@ -13,27 +13,28 @@ export const RestaurantDetail = () => {
   const restaurant = state?.allRestaurant?.find((r) => r.id == rId);
 
   const handleAddReview = () => {
-    const newReview = {
-      revName: 'Priyanshu Singh',
-      pp: profile,
-      comment: review.comment,
-      rating: review.rating,
-    };
-    const newAvg =
-      restaurant.ratings.reduce((acc, curr) => acc + curr.rating, 0) /
-      restaurant.ratings.length;
-
-    dispatch({
-      type: 'UPDATE_RESTAURANTS',
-      payload: state.allRestaurant.map((r) =>
-        r.id == rId
-          ? { ...r, ratings: [...r.ratings, newReview], averageRating: newAvg }
-          : r,
-      ),
-    });
-    setReview({ rating: 0, comment: '' });
+    if (review.comment !== '' || review.rating !== 0) {
+      const newReview = {
+        revName: 'Priyanshu Singh',
+        pp: profile,
+        comment: review.comment,
+        rating: review.rating,
+      };
+      dispatch({
+        type: 'UPDATE_RESTAURANTS',
+        payload: state.allRestaurant.map((r) =>
+          r.id == rId ? { ...r, ratings: [...r.ratings, newReview] } : r,
+        ),
+      });
+      setReview({ rating: 0, comment: '' });
+    } else {
+      window.alert('please fill proper field');
+    }
   };
 
+  const newAvg =
+    restaurant.ratings.reduce((acc, curr) => acc + curr.rating, 0) /
+    restaurant.ratings.length;
   return (
     <div>
       <div style={{ textAlign: 'left', padding: '20px' }}>
@@ -62,9 +63,7 @@ export const RestaurantDetail = () => {
                 {restaurant.menu.map((item) => item.name).join(',  ')}
               </p>
               <p style={{ margin: '0' }}>{restaurant.address}</p>
-              <p style={{ margin: '0' }}>
-                Average Rating: {restaurant.averageRating.toFixed(1)}
-              </p>
+              <p style={{ margin: '0' }}>Average Rating: {newAvg.toFixed(1)}</p>
             </div>
             <button
               style={{
